@@ -33,7 +33,7 @@ module.exports = {
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
-  				DEFAULT: '#82b734',
+  				DEFAULT: '#e5edc7',
   				foreground: 'hsl(var(--secondary-foreground))'
   			},
   			muted: {

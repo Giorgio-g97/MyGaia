@@ -20,6 +20,28 @@ const getServizi = async () => {
   return res;
 };
 
+const getSettori = async () => {
+  const query=gql`
+  query GetSettori {
+  settores {
+    id
+    nome
+    descrizione
+    immagine {
+      url
+    }
+    coloreSettore {
+      hex
+    }
+  }
+}
+`
+  const res = await request(MASTER_URL, query);
+  return res;
+
+}
+
 export default {
   getServizi,
+  getSettori
 };
