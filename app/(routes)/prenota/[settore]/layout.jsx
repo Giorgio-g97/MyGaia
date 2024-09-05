@@ -12,9 +12,9 @@ const layout = ({ children }) => {
       {children}
 
       <div className="flex justify-center mt-9">
-        <Button className="bg-primary">
-          <Link href="/prenota">Indietro</Link>
-        </Button>
+        <Link href="/prenota">
+          <Button className="bg-primary">Indietro</Button>
+        </Link>
       </div>
     </>
   );
