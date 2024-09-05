@@ -1,6 +1,9 @@
+"use client"
 import React, { useEffect, useState } from "react";
-import GlobalApi from "../_services/GlobalApi";
+
 import Image from "next/image";
+import GlobalApi from "@/app/_services/GlobalApi";
+import Link from "next/link";
 const Settori = () => {
   const [settori, setSettori] = useState([]);
 
@@ -10,7 +13,7 @@ const Settori = () => {
 
   const getSettori = () => {
     GlobalApi.getSettori().then((res) => {
-      console.log(res.settores);
+      console.log("Settori: ", res.settores);
       setSettori(res.settores);
     });
   };
@@ -23,7 +26,7 @@ const Settori = () => {
       <div className="flex flex-col md:flex-row md:justify-around items-center">
         {settori.length>0?
           settori.map((set, i) => (
-            <div key={i} className={`text-center flex md:flex-col justify-start md:justify-center gap-3 p-3 items-center bg-[${set?.coloreSettore?.hex}] bg-secondary my-8 w-[300px] md:w-[150px] md:h-[200px] shadow-lg hover:shadow-2xl hover:scale-105 transition-all ease-in-out rounded-lg`}>
+            <Link href={`/prenota/${set.id}`} key={i} className={`text-center flex md:flex-col justify-start md:justify-center gap-3 p-3 items-center bg-secondary my-8 w-[300px] md:w-[150px] md:h-[200px] shadow-lg hover:shadow-2xl hover:scale-105 transition-all ease-in-out rounded-lg`}>
               <Image
                 alt="icon-sector"
                 width={100}
@@ -31,7 +34,7 @@ const Settori = () => {
                 src={set.immagine.url}
               />
               <h2>{set.nome}</h2>
-            </div>
+            </Link>
           ))
         :
         [1,2,3].map((item,i)=>(

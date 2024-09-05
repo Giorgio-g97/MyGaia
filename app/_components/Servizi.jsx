@@ -8,7 +8,7 @@ const Servizi = ({ servizi }) => {
       {servizi.length>0?
         servizi.map((item, i) => (
           <Link
-            href={`/servizi/${item.id}`}
+            href={item.path}
             key={i}
             className="cursor-pointer bg-secondary p-3 shadow-lg hover:shadow-2xl hover:scale-105 transition-all ease-in-out rounded-lg flex flex-col justify-center items-center text-center"
           >

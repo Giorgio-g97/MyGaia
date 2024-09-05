@@ -20,15 +20,16 @@ import Link from "next/link";
 const Header = () => {
   const { data } = useSession(); //Recupero i dati della sessione (es. Google, Email ecc..)
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
 
   return (
     <div className="p-5 shadow-sm flex items-center justify-between">
       <div className="flex items-center">
         <Link href="/">
           <Image
+            priority
             alt="logo"
             className="p-3"
             src="/logo.jpg"
