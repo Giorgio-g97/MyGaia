@@ -7,7 +7,7 @@ import { signIn, useSession } from "next-auth/react";
 const page = ({ params }) => {
   const [operatori, setOperatore] = useState([]);
 
-  const {data, status} = useSession();
+  const { data, status } = useSession();
 
   useEffect(() => {
     console.log("Parametro URL: ", params);
@@ -32,12 +32,14 @@ const page = ({ params }) => {
   if (status == "authenticated") {
     return (
       <>
-        <div className="flex flex-wrap justify-around items-center">
+        <div className="flex flex-wrap justify-around items-center cursor-pointer">
           {operatori.length > 0
             ? operatori.map((op, i) => (
-                <div key={i} className="m-5">
-                  <CardOperatore operatori={op} />
-                </div>
+               
+                  <div key={i} className="m-5">
+                    <CardOperatore operatori={op} />
+                  </div>
+                
               ))
             : [1, 2, 3, 4].map((item, i) => (
                 <div
