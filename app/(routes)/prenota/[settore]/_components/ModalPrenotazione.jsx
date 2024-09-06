@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 // Import modale apertura UI
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -16,6 +18,7 @@ import { Button } from "@/components/ui/button";
 const ModalPrenotazione = ({ children, operatori }) => {
   const [date, setDate] = useState(new Date());
   const [timeSlot, setTimeSlot] = useState([]);
+  const [selectedTime, setSelectedTime] = useState();
 
   useEffect(() => {
     getTime();
@@ -45,14 +48,18 @@ const ModalPrenotazione = ({ children, operatori }) => {
       });
     }
 
-    setTimeSlot(timeList);//Aggiorna lo stato per renderizzarlo
+    setTimeSlot(timeList); //Aggiorna lo stato per renderizzarlo
   };
+
+  const salvaPrenotazione = () => {
+    
+  }
 
   return (
     <div>
       <Sheet>
         <SheetTrigger>{children}</SheetTrigger>
-        <SheetContent>
+        <SheetContent className="overflow-auto">
           <SheetHeader>
             <SheetTitle>
               <h2 className="text-[26px]">
@@ -61,11 +68,11 @@ const ModalPrenotazione = ({ children, operatori }) => {
               </h2>
             </SheetTitle>
             <SheetDescription>
-              <p className="text-[20px]">
+              <p className="text-[20px] my-5">
                 Seleziona data e ora disponibili per l'operatore selezionato
               </p>
-              <div className="mt-7 flex flex-col gap-2 items-baseline">
-                <h2 className="text-[20px]">
+              <div className="flex flex-col gap-2 items-baseline">
+                <h2 className="text-[20px] font-bold">
                   Seleziona una <span className="text-primary">data</span>
                 </h2>
                 <Calendar
@@ -76,17 +83,30 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 />
               </div>
               <div className="mt-7">
-                <h2 className="text-[20px]">
+                <h2 className="text-[20px] font-bold">
                   Seleziona un <span className="text-primary">orario</span>
                 </h2>
+                {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {timeSlot.map((item, i) => (
-                    <Button key={i} variant="outline">{item.time}</Button>
+                    <Button onClick={()=>setSelectedTime(item.time)} className={`${selectedTime==item.time&&'border-primary border-[1.5px] shadow-xl text-black font-bold'}`} key={i} variant="outline">
+                      {item.time}
+                    </Button>
                   ))}
                 </div>
               </div>
             </SheetDescription>
           </SheetHeader>
+          <SheetFooter className="mt-7">
+            <SheetClose className="flex gap-3">
+              <>
+                <Button className="border-primary" variant="outline">
+                  Annulla
+                </Button>
+                <Button onClick={()=>salvaPrenotazione()} disabled={!(selectedTime&&date)}>Prenota</Button>
+              </>
+            </SheetClose>
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     </div>

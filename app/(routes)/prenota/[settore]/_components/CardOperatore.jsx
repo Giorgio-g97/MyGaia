@@ -9,6 +9,9 @@ const CardOperatore = ({ operatori }) => {
         <Image alt="avatar-icon" width={50} height={50} src="/avatar.svg" />
         <h2>{operatori.nomeOperatore}</h2>
       </div>
+
+      
+
     </ModalPrenotazione>
   );
 };

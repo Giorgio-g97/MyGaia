@@ -84,6 +84,28 @@ const getOperatoriBySettori = async (settore) => {
   return res;
 };
 
+const createPrenot = async (operatoreId, data, ora, email, nome) => {
+  const mutation = gql`
+    mutation CreatePrenot {
+      createPrenotazione(
+        data: {
+          statoPrenotazione: prenotato
+          operatori: { connect: { id: "${operatoreId}" } }
+          ora: "${data}"
+          data: "${ora}"
+          email: "${email}"
+          nome: "${nome}"
+        }
+      ) {
+        id
+      }
+    }
+  `;
+
+  const res = await request(MASTER_URL, mutation);
+  return res;
+};
+
 export default {
   getServizi,
   getSettori,
