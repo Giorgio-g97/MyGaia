@@ -107,7 +107,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
     console.log("Data selezionata: ", date?.toString());
     console.log("Data ipotetica di oggi: ", today);
     // return today == date?.toString();
-    return currHour == time || today == date?.toString();
+    return currHour == time && today == date?.toString();
   };
 
   //TEST
