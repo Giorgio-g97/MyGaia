@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-//Import date-fns
-import {format} from "date-fns";
-import {it} from "date-fns/locale"
-
 // Import modale apertura UI
 import {
   Sheet,
@@ -22,27 +18,32 @@ import GlobalApi from "@/app/_services/GlobalApi";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
-const ModalPrenotazione = ({ children, operatori }) => {
-  const [date, setDate] = useState(new Date());//Aggiorna stato data
-  const [timeSlot, setTimeSlot] = useState([]);//Aggiorna stato orari
-  const [selectedTime, setSelectedTime] = useState();//Aggiorna stato ora selezionata
-  const { data } = useSession();//Prendi dati dalla sessione utente
+// date-fns
+import { format } from "date-fns";
+import { it } from "date-fns/locale"
 
+const ModalPrenotazione = ({ children, operatori }) => {
+  const [date, setDate] = useState(new Date); //Aggiorna stato data
+  const [timeSlot, setTimeSlot] = useState([]); //Aggiorna stato orari
+  const [selectedTime, setSelectedTime] = useState(); //Aggiorna stato ora selezionata
+  const { data } = useSession(); //Prendi dati dalla sessione utente
+
+  useEffect(() => {
+    date && getPrenByIdEData();
+    console.log(date);
+  }, [date]);
+
+  const getPrenByIdEData = () => {
+    GlobalApi.GetPrenByIdEData(operatori.id, date).then((res) => {
+      console.log(res);
+    });
+  };
+
+  // Lista orari ufficio
   useEffect(() => {
     getTime();
   }, []);
 
-  useEffect(()=>{
-    date&&getPrenByIdEData();
-  }, [date])
-
-  const getPrenByIdEData = () => {
-    GlobalApi.GetPrenByIdEData(operatori.id, date).then(res=>{
-      console.log(res)
-    })
-  }
-
-  // Lista orari ufficio
   const getTime = () => {
     const timeList = [];
 
@@ -69,24 +70,19 @@ const ModalPrenotazione = ({ children, operatori }) => {
     setTimeSlot(timeList); //Aggiorna lo stato per renderizzarlo
   };
 
-  // //Formatta data in italiano
-  const dataFormat = format(date, "dd MMMM yyyy", {locale: it});
-
-//Salva prenotazione in DB
+  //Salva prenotazione in DB
   const salvaPrenotazione = () => {
     GlobalApi.createPrenot(
       operatori.id,
       selectedTime,
-      dataFormat,
+      format(date, "dd MMMM yyyy", {locale: it}),
       data.user.email,
       data.user.name
     ).then(
       (res) => {
         console.log(res);
         if (res) {
-          toast.success("Prenotazione effettuata!", {
-            classNames: { title: "text-primary" },
-          });
+          toast.success("Prenotazione effettuata!");
         }
       },
       (e) => {
@@ -116,15 +112,14 @@ const ModalPrenotazione = ({ children, operatori }) => {
               </h2>
             </SheetTitle>
             <SheetDescription>
-              <p className="text-[20px] my-5">
+              <h2 className="text-[20px] my-5">
                 Seleziona data e ora disponibili per l'operatore selezionato
-              </p>
+              </h2>
               <div className="flex flex-col gap-2 items-baseline">
-                <h2 className="text-[20px] font-bold">
+                <p className="text-[20px] font-bold">
                   Seleziona una <span className="text-primary">data</span>
-                </h2>
+                </p>
                 <Calendar
-                  locale={it}
                   disabled={isWeekend}
                   mode="single"
                   selected={date}
@@ -138,21 +133,22 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </h2>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {date?.toString().startsWith("Sat" || "Sun") ? "" :
-                  timeSlot.map((item, i) => (
-                    <Button
-                      //Se la data attuale è un sabato/domenica disabilita gli orari
-                      onClick={() => setSelectedTime(item.time)}
-                      className={`${
-                        selectedTime == item.time &&
-                        "border-primary border-[1.5px] shadow-xl text-black font-bold"
-                      }`}
-                      key={i}
-                      variant="outline"
-                    >
-                      {item.time}
-                    </Button>
-                  ))}
+                  {date?.toString().startsWith("Sat" || "Sun")
+                    ? ""
+                    : timeSlot.map((item, i) => (
+                        <Button
+                          //Se la data attuale è un sabato/domenica disabilita gli orari
+                          onClick={() => setSelectedTime(item.time)}
+                          className={`${
+                            selectedTime == item.time &&
+                            "border-primary border-[1.5px] shadow-xl text-black font-bold"
+                          }`}
+                          key={i}
+                          variant="outline"
+                        >
+                          {item.time}
+                        </Button>
+                      ))}
                 </div>
               </div>
             </SheetDescription>
