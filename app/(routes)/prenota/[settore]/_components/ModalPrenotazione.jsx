@@ -14,11 +14,15 @@ import {
 // Import calendario prenotazioni
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
+import GlobalApi from "@/app/_services/GlobalApi";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 const ModalPrenotazione = ({ children, operatori }) => {
   const [date, setDate] = useState(new Date());
   const [timeSlot, setTimeSlot] = useState([]);
   const [selectedTime, setSelectedTime] = useState();
+  const { data } = useSession();
 
   useEffect(() => {
     getTime();
@@ -52,8 +56,36 @@ const ModalPrenotazione = ({ children, operatori }) => {
   };
 
   const salvaPrenotazione = () => {
-    
+    GlobalApi.createPrenot(
+      operatori.id,
+      date,
+      selectedTime,
+      data.user.email,
+      data.user.nome
+    ).then(
+      (res) => {
+        console.log(res);
+        if (res) {
+          toast.success("Prenotazione effettuata!", {
+            classNames: { title: "text-primary" },
+          });
+        }
+      },
+      (e) => {
+        toast.error("Qualcosa è andato storto, riprova.", {
+          classNames: { title: "text-red-500" },
+        });
+      }
+    );
+  };
+
+  //Funzione per disabilitare il sabato e la domenica
+  function isWeekend(date) {
+    const day = date.getDay();
+    return day == 0 || day == 6; // 0 is Sunday, 6 is Saturday
   }
+
+  console.log(typeof(date.toString()))
 
   return (
     <div>
@@ -76,6 +108,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                   Seleziona una <span className="text-primary">data</span>
                 </h2>
                 <Calendar
+                  disabled={isWeekend}
                   mode="single"
                   selected={date}
                   onSelect={setDate}
@@ -89,7 +122,16 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {timeSlot.map((item, i) => (
-                    <Button onClick={()=>setSelectedTime(item.time)} className={`${selectedTime==item.time&&'border-primary border-[1.5px] shadow-xl text-black font-bold'}`} key={i} variant="outline">
+                    <Button
+                      disabled={date.toString().startsWith("Sat" || "Sun")}
+                      onClick={() => setSelectedTime(item.time)}
+                      className={`${
+                        selectedTime == item.time &&
+                        "border-primary border-[1.5px] shadow-xl text-black font-bold"
+                      }`}
+                      key={i}
+                      variant="outline"
+                    >
                       {item.time}
                     </Button>
                   ))}
@@ -103,7 +145,12 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 <Button className="border-primary" variant="outline">
                   Annulla
                 </Button>
-                <Button onClick={()=>salvaPrenotazione()} disabled={!(selectedTime&&date)}>Prenota</Button>
+                <Button
+                  onClick={() => salvaPrenotazione()}
+                  disabled={!(selectedTime && date)}
+                >
+                  Prenota
+                </Button>
               </>
             </SheetClose>
           </SheetFooter>

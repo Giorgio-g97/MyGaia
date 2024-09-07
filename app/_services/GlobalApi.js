@@ -111,4 +111,5 @@ export default {
   getSettori,
   getOperatori,
   getOperatoriBySettori,
+  createPrenot
 };

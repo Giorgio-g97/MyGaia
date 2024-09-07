@@ -8,6 +8,7 @@ import "./globals.css";
 
 // Import Pages
 import Header from "./_components/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
             {children}
           </div>
         </NextAuthSessionProvider>
+        <Toaster />
       </body>
     </html>
   );
