@@ -109,10 +109,24 @@ const createPrenot = async (operatoreId, data, ora, email, nome) => {
   return res;
 };
 
+const GetPrenByIdEData = async (operatoreId, data) => {
+  const query = gql`
+  query PrenotByIdEData {
+  prenotaziones(where: {operatori: {id: "${operatoreId}"}, data: "${data}"}) {
+    data
+    ora
+  }
+}
+`
+const res = await request(MASTER_URL, query);
+return res;
+}
+
 export default {
   getServizi,
   getSettori,
   getOperatori,
   getOperatoriBySettori,
   createPrenot,
+  GetPrenByIdEData
 };

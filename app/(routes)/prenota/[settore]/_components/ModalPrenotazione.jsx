@@ -32,6 +32,16 @@ const ModalPrenotazione = ({ children, operatori }) => {
     getTime();
   }, []);
 
+  useEffect(()=>{
+    date&&getPrenByIdEData();
+  }, [date])
+
+  const getPrenByIdEData = () => {
+    GlobalApi.GetPrenByIdEData(operatori.id, date).then(res=>{
+      console.log(res)
+    })
+  }
+
   // Lista orari ufficio
   const getTime = () => {
     const timeList = [];
@@ -59,8 +69,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
     setTimeSlot(timeList); //Aggiorna lo stato per renderizzarlo
   };
 
-  const dataFormat = format(date, "dd MMMM yyyy", {locale: it})
+  // //Formatta data in italiano
+  const dataFormat = format(date, "dd MMMM yyyy", {locale: it});
 
+//Salva prenotazione in DB
   const salvaPrenotazione = () => {
     GlobalApi.createPrenot(
       operatori.id,
@@ -112,6 +124,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                   Seleziona una <span className="text-primary">data</span>
                 </h2>
                 <Calendar
+                  locale={it}
                   disabled={isWeekend}
                   mode="single"
                   selected={date}
@@ -125,10 +138,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </h2>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {timeSlot.map((item, i) => (
+                  {date?.toString().startsWith("Sat" || "Sun") ? "" :
+                  timeSlot.map((item, i) => (
                     <Button
                       //Se la data attuale è un sabato/domenica disabilita gli orari
-                      disabled={date.toString().startsWith("Sat" || "Sun")}
                       onClick={() => setSelectedTime(item.time)}
                       className={`${
                         selectedTime == item.time &&
