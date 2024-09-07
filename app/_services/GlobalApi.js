@@ -99,6 +99,9 @@ const createPrenot = async (operatoreId, data, ora, email, nome) => {
       ) {
         id
       }
+      publishManyPrenotaziones(to: PUBLISHED) {
+        count
+      }
     }
   `;
 
@@ -111,5 +114,5 @@ export default {
   getSettori,
   getOperatori,
   getOperatoriBySettori,
-  createPrenot
+  createPrenot,
 };

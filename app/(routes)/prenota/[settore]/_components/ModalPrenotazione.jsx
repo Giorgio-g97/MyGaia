@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 
+//Import date-fns
+import {format} from "date-fns";
+import {it} from "date-fns/locale"
+
 // Import modale apertura UI
 import {
   Sheet,
@@ -19,10 +23,10 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 const ModalPrenotazione = ({ children, operatori }) => {
-  const [date, setDate] = useState(new Date());
-  const [timeSlot, setTimeSlot] = useState([]);
-  const [selectedTime, setSelectedTime] = useState();
-  const { data } = useSession();
+  const [date, setDate] = useState(new Date());//Aggiorna stato data
+  const [timeSlot, setTimeSlot] = useState([]);//Aggiorna stato orari
+  const [selectedTime, setSelectedTime] = useState();//Aggiorna stato ora selezionata
+  const { data } = useSession();//Prendi dati dalla sessione utente
 
   useEffect(() => {
     getTime();
@@ -55,13 +59,15 @@ const ModalPrenotazione = ({ children, operatori }) => {
     setTimeSlot(timeList); //Aggiorna lo stato per renderizzarlo
   };
 
+  const dataFormat = format(date, "dd MMMM yyyy", {locale: it})
+
   const salvaPrenotazione = () => {
     GlobalApi.createPrenot(
       operatori.id,
-      date,
       selectedTime,
+      dataFormat,
       data.user.email,
-      data.user.nome
+      data.user.name
     ).then(
       (res) => {
         console.log(res);
@@ -84,8 +90,6 @@ const ModalPrenotazione = ({ children, operatori }) => {
     const day = date.getDay();
     return day == 0 || day == 6; // 0 is Sunday, 6 is Saturday
   }
-
-  console.log(typeof(date.toString()))
 
   return (
     <div>
@@ -123,6 +127,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {timeSlot.map((item, i) => (
                     <Button
+                      //Se la data attuale è un sabato/domenica disabilita gli orari
                       disabled={date.toString().startsWith("Sat" || "Sun")}
                       onClick={() => setSelectedTime(item.time)}
                       className={`${
@@ -146,7 +151,11 @@ const ModalPrenotazione = ({ children, operatori }) => {
                   Annulla
                 </Button>
                 <Button
-                  onClick={() => salvaPrenotazione()}
+                  onClick={() => {
+                    salvaPrenotazione();
+                    setSelectedTime(null);
+                    setDate(new Date());
+                  }}
                   disabled={!(selectedTime && date)}
                 >
                   Prenota
