@@ -31,14 +31,14 @@ const ModalPrenotazione = ({ children, operatori }) => {
 
   const getPrenByIdEData = () => {
     GlobalApi.GetPrenByIdEData(operatori.id, date).then((res) => {
-      setSlotPrenotato(res.prenotaziones);//Salva tra gli orari prenotati
+      setSlotPrenotato(res.prenotaziones); //Salva tra gli orari prenotati
     });
   };
 
-//ritorna boolean filtrando l'array confrontando l'ora iterata dall'ora "slotPrenotato"
-  const isOraPrenotata = (ora) =>{
-    return slotPrenotato.find(item => item.ora==ora)
-  }
+  //ritorna boolean filtrando l'array confrontando l'ora iterata dall'ora "slotPrenotato"
+  const isOraPrenotata = (ora) => {
+    return slotPrenotato.find((item) => item.ora == ora);
+  };
 
   // Lista orari ufficio
   useEffect(() => {
@@ -100,6 +100,15 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return day == 0 || day == 6; // 0 is Sunday, 6 is Saturday
   }
 
+  const confrontaTime = (time) => {
+    const today = new Date(date)
+    const currHour = new Date().getHours();
+    return currHour == time;
+    // console.log("Data selezionata: ", date)
+    // console.log("Data ipotetica di oggi: ", today)
+    // return today == date
+  };
+
   return (
     <div>
       <Sheet>
@@ -130,12 +139,16 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </div>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {date?.toString().startsWith("Sat" || "Sun")
+                  {date?.toString().startsWith("Sat" || "Sun") ||
+                  date < new Date()
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
-                        //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
-                          disabled={isOraPrenotata(item.time)}
+                          //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
+                          disabled={
+                            isOraPrenotata(item.time) ||
+                            confrontaTime(item.time.split(":")[0])
+                          }
                           //Se la data attuale è un sabato/domenica disabilita gli orari
                           onClick={() => setSelectedTime(item.time)}
                           className={`${
