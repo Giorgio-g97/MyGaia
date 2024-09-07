@@ -18,26 +18,27 @@ import GlobalApi from "@/app/_services/GlobalApi";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
-// date-fns
-import { format } from "date-fns";
-import { it } from "date-fns/locale"
-
 const ModalPrenotazione = ({ children, operatori }) => {
-  const [date, setDate] = useState(new Date); //Aggiorna stato data
+  const [date, setDate] = useState(new Date()); //Aggiorna stato data
   const [timeSlot, setTimeSlot] = useState([]); //Aggiorna stato orari
   const [selectedTime, setSelectedTime] = useState(); //Aggiorna stato ora selezionata
+  const [slotPrenotato, setSlotPrenotato] = useState([]);
   const { data } = useSession(); //Prendi dati dalla sessione utente
 
   useEffect(() => {
     date && getPrenByIdEData();
-    console.log(date);
   }, [date]);
 
   const getPrenByIdEData = () => {
     GlobalApi.GetPrenByIdEData(operatori.id, date).then((res) => {
-      console.log(res);
+      setSlotPrenotato(res.prenotaziones);//Salva tra gli orari prenotati
     });
   };
+
+//ritorna boolean filtrando l'array confrontando l'ora iterata dall'ora "slotPrenotato"
+  const isOraPrenotata = (ora) =>{
+    return slotPrenotato.find(item => item.ora==ora)
+  }
 
   // Lista orari ufficio
   useEffect(() => {
@@ -75,7 +76,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
     GlobalApi.createPrenot(
       operatori.id,
       selectedTime,
-      format(date, "dd MMMM yyyy", {locale: it}),
+      date,
       data.user.email,
       data.user.name
     ).then(
@@ -105,20 +106,16 @@ const ModalPrenotazione = ({ children, operatori }) => {
         <SheetTrigger>{children}</SheetTrigger>
         <SheetContent className="overflow-auto">
           <SheetHeader>
-            <SheetTitle>
-              <h2 className="text-[26px]">
-                Prenotazione appuntamento con{" "}
-                <span className="text-primary">{operatori.nomeOperatore}</span>
-              </h2>
+            <SheetTitle className="text-[26px]">
+              Prenotazione appuntamento con{" "}
+              <span className="text-primary">{operatori.nomeOperatore}</span>
             </SheetTitle>
-            <SheetDescription>
-              <h2 className="text-[20px] my-5">
-                Seleziona data e ora disponibili per l'operatore selezionato
-              </h2>
-              <div className="flex flex-col gap-2 items-baseline">
-                <p className="text-[20px] font-bold">
+            <SheetDescription className="text-[20px] my-5">
+              Seleziona data e ora disponibili per l'operatore selezionato
+              <div className="flex flex-col gap-2 items-baseline text-[20px] font-bold">
+                <div>
                   Seleziona una <span className="text-primary">data</span>
-                </p>
+                </div>
                 <Calendar
                   disabled={isWeekend}
                   mode="single"
@@ -128,15 +125,17 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 />
               </div>
               <div className="mt-7">
-                <h2 className="text-[20px] font-bold">
+                <div className="text-[20px] font-bold">
                   Seleziona un <span className="text-primary">orario</span>
-                </h2>
+                </div>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date?.toString().startsWith("Sat" || "Sun")
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
+                        //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
+                          disabled={isOraPrenotata(item.time)}
                           //Se la data attuale è un sabato/domenica disabilita gli orari
                           onClick={() => setSelectedTime(item.time)}
                           className={`${
