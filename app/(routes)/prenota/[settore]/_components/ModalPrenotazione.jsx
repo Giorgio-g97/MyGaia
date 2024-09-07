@@ -100,14 +100,20 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return day == 0 || day == 6; // 0 is Sunday, 6 is Saturday
   }
 
-  const confrontaTime = (time) => {
-    const today = new Date(date)
-    const currHour = new Date().getHours();
-    return currHour == time;
-    // console.log("Data selezionata: ", date)
-    // console.log("Data ipotetica di oggi: ", today)
-    // return today == date
+  const confrontaTime = (time, date) => {
+    const today = new Date().toString(); //Data selezionata parsata in stringa
+    const currHour = new Date().getHours(); //Ora attuale
+    console.log("Ora corrente: ", currHour);
+    console.log("Data selezionata: ", date?.toString());
+    console.log("Data ipotetica di oggi: ", today);
+    // return today == date?.toString();
+    return currHour == time || today == date?.toString();
   };
+
+  //TEST
+  // useEffect(() => {
+  //   console.log(confrontaTime(date));
+  // }, [date])
 
   return (
     <div>
@@ -147,7 +153,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                           //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
                           disabled={
                             isOraPrenotata(item.time) ||
-                            confrontaTime(item.time.split(":")[0])
+                            confrontaTime(item.time.split(":")[0], date)
                           }
                           //Se la data attuale è un sabato/domenica disabilita gli orari
                           onClick={() => setSelectedTime(item.time)}
