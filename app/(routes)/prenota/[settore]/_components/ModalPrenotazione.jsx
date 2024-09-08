@@ -126,7 +126,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
     <div>
       <Sheet>
         <SheetTrigger>{children}</SheetTrigger>
-        <SheetContent className="overflow-auto">
+        <SheetContent className="overflow-auto w-full">
           <SheetHeader>
             <SheetTitle className="text-[26px]">
               Prenotazione appuntamento con{" "}
@@ -134,7 +134,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
             </SheetTitle>
             <SheetDescription className="text-[20px] my-5">
               <p>Seleziona data e ora disponibili per l&apos;operatore selezionato</p>
-              <div className="flex flex-col gap-2 items-baseline text-[20px] font-bold">
+              <div className="flex flex-col gap-2 items-center text-[20px] font-bold">
                 <div>
                   Seleziona una <span className="text-primary">data</span>
                 </div>
