@@ -4,7 +4,7 @@ import CardOperatore from "./_components/CardOperatore";
 import GlobalApi from "@/app/_services/GlobalApi";
 import { signIn, useSession } from "next-auth/react";
 
-const page = ({ params }) => {
+const Operatori = ({ params }) => {
   const [operatori, setOperatore] = useState([]);
 
   const { data, status } = useSession();
@@ -53,4 +53,4 @@ const page = ({ params }) => {
   }
 };
 
-export default page;
+export default Operatori;
