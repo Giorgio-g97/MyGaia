@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 
-const leMiePrenotazioni = () => {
+const lemieprenotazioni = () => {
   const { data } = useSession();
   const [cronPrenot, setCronPrenot] = useState([]);
 
@@ -52,4 +52,4 @@ const leMiePrenotazioni = () => {
   );
 };
 
-export default leMiePrenotazioni;
+export default lemieprenotazioni;
