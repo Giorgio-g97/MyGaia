@@ -10,7 +10,7 @@ export const authOptions = {
       authorization: { params: { scope: "openid email profile" } },
       idToken: true,
       clientId: "P2lTjNHUAM8E7oDdttN7wzjSsG5D",
-      clientSecret: process.env.VERCEL_ACCESS_KEY,
+      clientSecret: process.env.NEXTAUTH_SECRET,
       checks: ["pkce", "state"],
       profile(profile) {
         return {
