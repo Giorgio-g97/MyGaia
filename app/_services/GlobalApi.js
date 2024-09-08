@@ -125,7 +125,7 @@ const GetPrenByIdEData = async (operatoreId, data) => {
 const getUserPrenotCronol = async (email) => {
   const query = gql`
   query GetUserPrenotCronol  {
-  prenotaziones(where: {email: "${email}"}) {
+  prenotaziones(where: {email: "${email}"}, orderBy: data_DESC) {
     operatori {
       email
       nomeOperatore
