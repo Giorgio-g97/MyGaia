@@ -57,9 +57,6 @@ const Header = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex justify-end">
-                Profilo
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex justify-end">
                 <Link href={"/lemieprenotazioni"}> Le mie prenotazioni</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
