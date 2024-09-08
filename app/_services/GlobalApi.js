@@ -117,10 +117,30 @@ const GetPrenByIdEData = async (operatoreId, data) => {
     ora
   }
 }
-`
-const res = await request(MASTER_URL, query);
-return res;
+`;
+  const res = await request(MASTER_URL, query);
+  return res;
+};
+
+const getUserPrenotCronol = async (email) => {
+  const query = gql`
+  query GetUserPrenotCronol  {
+  prenotaziones(where: {email: "${email}"}) {
+    operatori {
+      email
+      nomeOperatore
+      settore {
+        nome
+      }
+    }
+    data
+    ora
+  }
 }
+`;
+  const res = await request(MASTER_URL, query);
+  return res;
+};
 
 export default {
   getServizi,
@@ -128,5 +148,6 @@ export default {
   getOperatori,
   getOperatoriBySettori,
   createPrenot,
-  GetPrenByIdEData
+  GetPrenByIdEData,
+  getUserPrenotCronol,
 };

@@ -32,7 +32,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
   }, [date]);
 
   const getPrenByIdEData = () => {
-    GlobalApi.GetPrenByIdEData(operatori.id, date).then((res) => {
+    GlobalApi.GetPrenByIdEData(
+      operatori.id,
+      format(date, "dd MMMM yyyy", { locale: it })
+    ).then((res) => {
       setSlotPrenotato(res.prenotaziones); //Salva tra gli orari prenotati
     });
   };
@@ -42,9 +45,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return slotPrenotato.find((item) => item.ora == ora);
   };
 
-  useEffect(()=>{
-    console.log(isOraPrenotata(timeSlot[0]))
-  },[])
+  useEffect(() => {
+    console.log(isOraPrenotata(timeSlot[0]));
+  }, []);
 
   // Lista orari ufficio
   useEffect(() => {
@@ -82,7 +85,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
     GlobalApi.createPrenot(
       operatori.id,
       selectedTime,
-      date,
+      format(date, "dd MMMM yyyy", { locale: it }),
       data.user.email,
       data.user.name
     ).then(
@@ -156,7 +159,8 @@ const ModalPrenotazione = ({ children, operatori }) => {
                         <Button
                           //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
                           disabled={
-                            isOraPrenotata(item.time) || confrontaTime(item.time.split(":")[0], date)//se la data selezionata corrisponde alla data odierna, disabilita lo slot orario dell'ora attuale
+                            isOraPrenotata(item.time) ||
+                            confrontaTime(item.time.split(":")[0], date) //se la data selezionata corrisponde alla data odierna, disabilita lo slot orario dell'ora attuale
                           }
                           //Se la data attuale è un sabato/domenica disabilita gli orari
                           onClick={() => setSelectedTime(item.time)}
