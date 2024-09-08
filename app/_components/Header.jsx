@@ -60,7 +60,7 @@ const Header = () => {
                 Profilo
               </DropdownMenuItem>
               <DropdownMenuItem className="flex justify-end">
-                Le mie prenotazioni
+                <Link href={"/lemieprenotazioni"}> Le mie prenotazioni</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => signOut()}
