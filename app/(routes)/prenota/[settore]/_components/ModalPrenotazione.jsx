@@ -133,7 +133,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
               <span className="text-primary">{operatori.nomeOperatore}</span>
             </SheetTitle>
             <SheetDescription className="text-[20px] my-5">
-              Seleziona data e ora disponibili per l'operatore selezionato
+              <p>Seleziona data e ora disponibili per l&apos;operatore selezionato</p>
               <div className="flex flex-col gap-2 items-baseline text-[20px] font-bold">
                 <div>
                   Seleziona una <span className="text-primary">data</span>
