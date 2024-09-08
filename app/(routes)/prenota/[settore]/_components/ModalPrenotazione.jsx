@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import GlobalApi from "@/app/_services/GlobalApi";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import { it } from "date-fns/locale";
 
 const ModalPrenotazione = ({ children, operatori }) => {
   const [date, setDate] = useState(new Date()); //Aggiorna stato data
@@ -76,7 +78,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
     GlobalApi.createPrenot(
       operatori.id,
       selectedTime,
-      date,
+      format(date, "dd MMMM yyyy", {locale: it}),
       data.user.email,
       data.user.name
     ).then(
@@ -101,22 +103,17 @@ const ModalPrenotazione = ({ children, operatori }) => {
   }
 
   const confrontaTime = (time, date) => {
-    const today = new Date(2024, 8, 9).toString(); //Data odierna parsata in stringa
+    const today = new Date().toString(); //Data odierna parsata in stringa
     const currHour = new Date().getHours(); //Ora attuale
     console.log("Ora corrente: ", currHour);
     console.log("Data selezionata: ", date?.toString());
     console.log("Data ipotetica di oggi: ", today);
-/**
- * ritorna true se l'ora corrente è uguale all'ora degli slot
- * Allo stesso tempo se la data odierna coincide con la data selezionata
- */
+    /**
+     * ritorna true se l'ora corrente è magg./uguale all'ora degli slot
+     * Allo stesso tempo se la data odierna coincide con la data selezionata
+     */
     return currHour >= time && today == date?.toString();
   };
-
-  //TEST
-  // useEffect(() => {
-  //   console.log(confrontaTime(date));
-  // }, [date])
 
   return (
     <div>
@@ -149,14 +146,14 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date?.toString().startsWith("Sat" || "Sun") ||
-                  date < new Date()//se la data scelta è passata rispetto a quella odierna
+                  date < new Date() //se la data scelta è passata rispetto a quella odierna
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
                           //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
                           disabled={
                             isOraPrenotata(item.time) ||
-                          //se la data selezionata corrisponde alla data odierna, disabilita lo slot orario dell'ora attuale 
+                            //se la data selezionata corrisponde alla data odierna, disabilita lo slot orario dell'ora attuale
                             confrontaTime(item.time.split(":")[0], date)
                           }
                           //Se la data attuale è un sabato/domenica disabilita gli orari
