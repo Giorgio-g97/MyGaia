@@ -45,9 +45,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return slotPrenotato.find((item) => item.ora == ora);
   };
 
-  useEffect(() => {
-    console.log(isOraPrenotata(timeSlot[0]));
-  }, []);
+  // useEffect(() => {
+  //   console.log(isOraPrenotata(timeSlot[0]));
+  // }, []);
 
   // Lista orari ufficio
   useEffect(() => {
