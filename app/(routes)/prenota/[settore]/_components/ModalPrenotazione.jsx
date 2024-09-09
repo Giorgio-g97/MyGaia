@@ -110,7 +110,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
   }
 
   const confrontaTime = (time, date) => {
-    const today = new Date().toString(); //Data odierna parsata in stringa
+    const today = new Date().toLocaleDateString(); //Data odierna parsata in stringa
     const currHour = new Date().getHours(); //Ora attuale
     // console.log("Ora corrente: ", currHour);
     // console.log("Data selezionata: ", date?.toString());
@@ -119,12 +119,11 @@ const ModalPrenotazione = ({ children, operatori }) => {
      * ritorna true se l'ora corrente è magg./uguale all'ora degli slot
      * Allo stesso tempo se la data odierna coincide con la data selezionata
      */
-    return currHour >= time && today == date?.toString();
+    return /* currHour >= time && */ today == new Date(date).toLocaleDateString();
   };
 
   useEffect(() => {
-    console.log("Data selezionata: ", date);
-    console.log("Data odierna: ", new Date());
+    console.log(confrontaTime(timeSlot[0].time.split(":")[0], date))
   }, [date]);
 
   return (
