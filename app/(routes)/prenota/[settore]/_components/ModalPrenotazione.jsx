@@ -105,6 +105,11 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return day == 0 || day == 6; // 0 is Sunday, 6 is Saturday
   }
 
+  //Funzione per disabilitare se il giorno iterato è trascorso rispetto al giorno attuale
+  const isToday = () => {
+    return date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0);
+  };
+
   const confrontaTime = (time, date) => {
     const today = new Date().toLocaleDateString(); //Data odierna parsata in stringa
     const currHour = new Date().getHours(); //Ora attuale
@@ -151,9 +156,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </div>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {date?.toString().startsWith("Sat" || "Sun") ||
-                  date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
-                    ? ""
+                  {date?.toString().startsWith("Sat" || "Sun") || isToday()
+                    ? /* date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) */ //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
+                      ""
                     : timeSlot.map((item, i) => (
                         <Button
                           //Se l'ora iterata è uguale all'ora della prenotazione, ritorna true, disattivando quindi l'ora
