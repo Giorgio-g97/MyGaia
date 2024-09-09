@@ -45,10 +45,6 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return slotPrenotato.find((item) => item.ora == ora);
   };
 
-  // useEffect(() => {
-  //   console.log(isOraPrenotata(timeSlot[0]));
-  // }, []);
-
   // Lista orari ufficio
   useEffect(() => {
     getTime();
@@ -119,12 +115,8 @@ const ModalPrenotazione = ({ children, operatori }) => {
      * ritorna true se l'ora corrente è magg./uguale all'ora degli slot
      * Allo stesso tempo se la data odierna coincide con la data selezionata
      */
-    return /* currHour >= time && */ today == new Date(date).toLocaleDateString();
+    return currHour >= time && today == new Date(date).toLocaleDateString();
   };
-
-  useEffect(() => {
-    console.log(confrontaTime(timeSlot[0].time.split(":")[0], date))
-  }, [date]);
 
   return (
     <div>
@@ -160,7 +152,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date?.toString().startsWith("Sat" || "Sun") ||
-                  date?.toString() < new Date().toDateString() //se la data scelta è passata rispetto a quella odierna
+                  date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
