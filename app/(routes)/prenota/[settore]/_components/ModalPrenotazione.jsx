@@ -124,7 +124,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
 
   useEffect(()=>{
     console.log("Data selezionata: ", date);
-    console("Data odierna: ", new Date())
+    console.log("Data odierna: ", new Date())
   },[date])
 
   return (
