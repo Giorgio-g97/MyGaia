@@ -112,9 +112,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
   const confrontaTime = (time, date) => {
     const today = new Date().toString(); //Data odierna parsata in stringa
     const currHour = new Date().getHours(); //Ora attuale
-    console.log("Ora corrente: ", currHour);
-    console.log("Data selezionata: ", date?.toString());
-    console.log("Data ipotetica di oggi: ", today);
+    // console.log("Ora corrente: ", currHour);
+    // console.log("Data selezionata: ", date?.toString());
+    // console.log("Data ipotetica di oggi: ", today);
     /**
      * ritorna true se l'ora corrente è magg./uguale all'ora degli slot
      * Allo stesso tempo se la data odierna coincide con la data selezionata
@@ -123,8 +123,8 @@ const ModalPrenotazione = ({ children, operatori }) => {
   };
 
   useEffect(()=>{
-    console.log("Data selezionata: ", date);
-    console.log("Data odierna: ", new Date())
+    console.log("Data selezionata: ", typeof(date));
+    console.log("Data odierna: ", typeof(new Date()))
   },[date])
 
   return (
@@ -158,7 +158,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date?.toString().startsWith("Sat" || "Sun") ||
-                  date?.toString() < new Date().toString() //se la data scelta è passata rispetto a quella odierna
+                  date < new Date() //se la data scelta è passata rispetto a quella odierna
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
