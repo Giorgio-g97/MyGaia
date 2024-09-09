@@ -156,7 +156,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </div>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {date?.toString().startsWith("Sat" || "Sun") || isToday()
+                  {date&&date?.toString().startsWith("Sat" || "Sun") || isToday()
                     ? /* date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) */ //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
                       ""
                     : timeSlot.map((item, i) => (
