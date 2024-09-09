@@ -122,10 +122,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return currHour >= time && today == date?.toString();
   };
 
-  useEffect(()=>{
-    console.log("Data selezionata: ", typeof(date));
-    console.log("Data odierna: ", typeof(new Date()))
-  },[date])
+  useEffect(() => {
+    console.log("Data selezionata: ", date);
+    console.log("Data odierna: ", new Date());
+  }, [date]);
 
   return (
     <div>
@@ -138,7 +138,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
               <span className="text-primary">{operatori.nomeOperatore}</span>
             </SheetTitle>
             <SheetDescription className="text-[20px] my-5">
-              <p>Seleziona data e ora disponibili per l&apos;operatore selezionato</p>
+              <p>
+                Seleziona data e ora disponibili per l&apos;operatore
+                selezionato
+              </p>
               <div className="flex flex-col gap-2 items-center text-[20px] font-bold">
                 <div>
                   Seleziona una <span className="text-primary">data</span>
@@ -158,7 +161,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date?.toString().startsWith("Sat" || "Sun") ||
-                  date < new Date() //se la data scelta è passata rispetto a quella odierna
+                  date?.toString() < new Date().toDateString() //se la data scelta è passata rispetto a quella odierna
                     ? ""
                     : timeSlot.map((item, i) => (
                         <Button
