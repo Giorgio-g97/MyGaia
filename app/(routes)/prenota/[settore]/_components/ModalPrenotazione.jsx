@@ -122,6 +122,10 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return currHour >= time && today == date?.toString();
   };
 
+  useEffect(()=>{
+    console.log(date);
+  },[date])
+
   return (
     <div>
       <Sheet>
