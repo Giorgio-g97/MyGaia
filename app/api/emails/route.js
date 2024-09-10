@@ -10,7 +10,7 @@ export async function POST(req) {
       await req.json();
 
     await resend.emails.send({
-      from: "giorgio.g97@gmail.com", // Ricordati che in produzione dovrai usare un account vero!
+      from: "mosihom618@barakal.com", // Ricordati che in produzione dovrai usare un account vero!
       to: email,
       subject: "Prenotazione appuntamento",
       react: (
