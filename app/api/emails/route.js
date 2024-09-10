@@ -5,19 +5,28 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.NEXT_RESEND_API_KEY);
 
 export async function POST(req) {
-  const { email, nomeCliente, nomeOperatore, dataApp, ora } = await req.json();
+  try {
+    const { email, nomeCliente, nomeOperatore, dataApp, ora } =
+      await req.json();
 
-  await resend.emails.send({
-    from: "giorgio.g97@gmail.com", // Ricordati che in produzione dovrai usare un account vero!
-    to: email,
-    subject: "Prenotazione appuntamento",
-    react: (
-      <Welcome
-        nomeCliente={nomeCliente}
-        nomeOperatore={nomeOperatore}
-        dataApp={dataApp}
-        ora={ora}
-      />
-    ),
-  });
+    await resend.emails.send({
+      from: "giorgio.g97@gmail.com", // Ricordati che in produzione dovrai usare un account vero!
+      to: email,
+      subject: "Prenotazione appuntamento",
+      react: (
+        <Welcome
+          nomeCliente={nomeCliente}
+          nomeOperatore={nomeOperatore}
+          dataApp={dataApp}
+          ora={ora}
+        />
+      ),
+    });
+    if (error) {
+      return Response.json({ error }, { status: 500 });
+    }
+    return Response.json(data);
+  } catch (error) {
+    return Response.json({ error }, { status: 500 });
+  }
 }
