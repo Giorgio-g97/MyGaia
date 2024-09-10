@@ -27,7 +27,7 @@ export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora, logo
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
             <Section className="mt-[32px] flex justify-center items-center">
               <Img
-                className="flex items-center justify-center"
+                className="flex items-center justify-center text-center"
                 src="https://my-gaia.vercel.app/_next/image?url=%2Flogo.jpg&w=256&q=75"
                 width={200}
                 height={100}
