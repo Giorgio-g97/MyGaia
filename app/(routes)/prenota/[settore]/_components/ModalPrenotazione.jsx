@@ -20,6 +20,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import Image from "next/image";
 
 const ModalPrenotazione = ({ children, operatori }) => {
   const [date, setDate] = useState(new Date()); //Aggiorna stato data

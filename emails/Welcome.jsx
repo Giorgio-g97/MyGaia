@@ -17,7 +17,7 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora }) {
+export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora, logo}) {
   return (
     <Html>
       <Head />
@@ -25,13 +25,13 @@ export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora }) {
       <Tailwind>
         <Body className="bg-white my-auto mx-auto font-sans px-2">
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px]">
-             {/*  <Img
-                src="../public/logo.jpg"
-                width={50}
-                height={50}
+            <Section className="mt-[32px] flex justify-center items-center">
+              <Img
+                src="https://my-gaia.vercel.app/_next/image?url=%2Flogo.jpg&w=256&q=75"
+                width={200}
+                height={100}
                 alt="logo"
-              /> */}
+              />
             </Section>
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Prenotazione appuntamento con {nomeCliente}
