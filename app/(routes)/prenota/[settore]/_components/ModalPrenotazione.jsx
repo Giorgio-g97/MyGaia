@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 
 // Import modale apertura UI
@@ -88,7 +89,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
       (res) => {
         console.log(res);
         if (res) {
-          toast.success("Prenotazione effettuata!");
+          toast.success("Prenotazione effettuata! Invieremo una notifica all'operatore.");
         }
       },
       (e) => {
@@ -122,6 +123,18 @@ const ModalPrenotazione = ({ children, operatori }) => {
      */
     return currHour >= time && today == new Date(date).toLocaleDateString();
   };
+
+  const inviaMailOperatore= async () => {
+    await fetch("/api/emails", {method: "POST",
+      body: JSON.stringify({
+        email: operatori.email,
+        nomeCliente: data.user.name,
+        nomeOperatore: operatori.nome,
+        data: date,
+        ora: selectedTime,
+      })
+    })
+  }
 
   return (
     <div>
@@ -157,7 +170,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {date == null || undefined && date?.toString().startsWith("Sat" || "Sun") || isToday()
-                    ? /* date?.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) */ //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
+                    ? //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
                       ""
                     : timeSlot.map((item, i) => (
                         <Button
@@ -189,8 +202,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
                   Annulla
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={async() => {
                     salvaPrenotazione();
+                    inviaMailOperatore();
                     setSelectedTime(null);
                     setDate(new Date());
                   }}
