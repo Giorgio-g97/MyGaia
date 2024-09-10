@@ -5,8 +5,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.NEXT_RESEND_API_KEY);
 
 export async function POST(req) {
-  const { email, nomeCliente, nomeOperatore, selectedTime /* ora */ } =
-    await req.json();
+  const { email, nomeCliente, nomeOperatore, dataApp, ora } = await req.json();
 
   await resend.emails.send({
     from: "onboarding@resend.dev", // Ricordati che in produzione dovrai usare un account vero!
@@ -16,7 +15,8 @@ export async function POST(req) {
       <Welcome
         nomeCliente={nomeCliente}
         nomeOperatore={nomeOperatore}
-        data={selectedTime}
+        dataApp={dataApp}
+        ora={ora}
       />
     ),
   });

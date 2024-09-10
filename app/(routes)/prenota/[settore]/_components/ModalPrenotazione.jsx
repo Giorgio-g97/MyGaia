@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 
 // Import modale apertura UI
@@ -89,7 +89,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
       (res) => {
         console.log(res);
         if (res) {
-          toast.success("Prenotazione effettuata! Invieremo una notifica all'operatore.");
+          toast.success(
+            "Prenotazione effettuata! Invieremo una notifica all'operatore."
+          );
         }
       },
       (e) => {
@@ -124,17 +126,18 @@ const ModalPrenotazione = ({ children, operatori }) => {
     return currHour >= time && today == new Date(date).toLocaleDateString();
   };
 
-  const inviaMailOperatore= async () => {
-    await fetch("/api/emails", {method: "POST",
+  const inviaMailOperatore = async () => {
+    await fetch("/api/emails", {
+      method: "POST",
       body: JSON.stringify({
         email: operatori.email,
         nomeCliente: data.user.name,
-        nomeOperatore: operatori.nome,
-        data: date,
+        nomeOperatore: operatori.nomeOperatore,
+        dataApp: format(date, "dd MMMM yyyy", { locale: it }),
         ora: selectedTime,
-      })
-    })
-  }
+      }),
+    });
+  };
 
   return (
     <div>
@@ -169,7 +172,9 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 </div>
                 {/* ITERO GLI ORARI DISPONIBILI */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {date == null || undefined && date?.toString().startsWith("Sat" || "Sun") || isToday()
+                  {date == null ||
+                  (undefined && date?.toString().startsWith("Sat" || "Sun")) ||
+                  isToday()
                     ? //se la data scelta è passata rispetto a quella odierna (imposto entrambi a 00:00 altrimenti non mi fa correttamente il controllo)
                       ""
                     : timeSlot.map((item, i) => (
@@ -202,7 +207,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                   Annulla
                 </Button>
                 <Button
-                  onClick={async() => {
+                  onClick={async () => {
                     salvaPrenotazione();
                     inviaMailOperatore();
                     setSelectedTime(null);
