@@ -8,7 +8,7 @@ export async function POST(req) {
   const { email, nomeCliente, nomeOperatore, dataApp, ora } = await req.json();
 
   await resend.emails.send({
-    from: "onboarding@resend.dev", // Ricordati che in produzione dovrai usare un account vero!
+    from: "giorgio.g97@gmail.com", // Ricordati che in produzione dovrai usare un account vero!
     to: email,
     subject: "Prenotazione appuntamento",
     react: (
