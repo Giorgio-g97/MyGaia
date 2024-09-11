@@ -212,7 +212,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                     salvaPrenotazione();
                     inviaMailOperatore();
                     setSelectedTime(null);
-                    setDate(new Date());
+                    setDate(null);
                   }}
                   disabled={!(selectedTime && date)}
                 >
