@@ -17,7 +17,7 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora, logo}) {
+export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora}) {
   return (
     <Html>
       <Head />
