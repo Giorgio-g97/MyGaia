@@ -162,7 +162,7 @@ const ModalPrenotazione = ({ children, operatori }) => {
                 <Calendar
                   disabled={isWeekend}
                   mode="single"
-                  selected={date}
+{/*                   selected={date} */}
                   onSelect={setDate}
                   className="rounded-md border"
                 />
