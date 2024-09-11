@@ -86,11 +86,11 @@ export default function Welcome({ nomeCliente, nomeOperatore, dataApp, ora }) {
             </Text>
             <Section style={btnContainer}>
               <Text>
-                <p className="text-left p-5">
+                <p className="text-left p-5 text-[20px]">
                   <strong>Data appuntamento: </strong>
                   {dataApp}
                 </p>
-                <p className="text-left p-5">
+                <p className="text-left p-5 text-[20px]">
                   <strong>Ora: </strong> {ora}
                 </p>
               </Text>
